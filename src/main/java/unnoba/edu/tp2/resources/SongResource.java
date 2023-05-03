@@ -1,24 +1,47 @@
 package unnoba.edu.tp2.resources;
 
-import jakarta.ws.rs.*;
+
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import unnoba.edu.tp2.DTO.BookDTO;
-import unnoba.edu.tp2.DTO.newBookDTO;
-import unnoba.edu.tp2.Model.Book;
-import unnoba.edu.tp2.service.BookService;
+
+import unnoba.edu.tp2.DTO.SongDTO;
+import unnoba.edu.tp2.Model.Song;
+import unnoba.edu.tp2.service.SongService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Path("/books")
-public class BookResource {
-
+@Path("/songs")
+public class SongResource {
+    @Autowired
+    private SongService songService;
     private ModelMapper modelMapper = new ModelMapper();
 
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response getSongs() {
+        List<SongDTO> songsDTO = songService.getSongs().stream()
+                .map(song -> modelMapper.map(song, SongDTO.class))
+                .collect(Collectors.toList());
+        return Response.ok(songsDTO).build();
+    }
+
+
+
+}
+
+
+
+
+
+
+
+/*
     @Autowired
     private BookService service;
 
@@ -88,6 +111,8 @@ public class BookResource {
     }
 
 }
+
+ */
 
 
 
