@@ -2,6 +2,9 @@ package unnoba.edu.tp2.Model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
+
 @Entity
 @Table(name = "song")
 public class Song {

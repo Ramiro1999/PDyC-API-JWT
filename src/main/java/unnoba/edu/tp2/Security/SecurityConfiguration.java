@@ -4,6 +4,7 @@ package unnoba.edu.tp2.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -44,6 +45,7 @@ public class SecurityConfiguration{
                 .userDetailsService(userDetailsService)
                 .cors().and().csrf().disable().authorizeRequests()
                 .requestMatchers("/", "/login").permitAll()
+                .requestMatchers(HttpMethod.GET,"/playlists/*","/playlists","/songs").permitAll()
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))

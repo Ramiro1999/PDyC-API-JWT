@@ -4,12 +4,14 @@ package unnoba.edu.tp2.resources;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import unnoba.edu.tp2.DTO.SongDTO;
+import unnoba.edu.tp2.Model.Genre;
 import unnoba.edu.tp2.Model.Song;
 import unnoba.edu.tp2.service.SongService;
 
@@ -22,6 +24,7 @@ public class SongResource {
     private SongService songService;
     private ModelMapper modelMapper = new ModelMapper();
 
+    /*
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response getSongs() {
@@ -30,6 +33,18 @@ public class SongResource {
                 .collect(Collectors.toList());
         return Response.ok(songsDTO).build();
     }
+
+
+     */
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Response getSongsByAuthorGenre(@QueryParam("author") String author,@QueryParam("genre") Genre genre ) {
+        List<SongDTO> songsByAuthorGenreDTO = songService.getSongsByAuthorGenre(author,genre).stream()
+                .map(song -> modelMapper.map(song, SongDTO.class))
+                .collect(Collectors.toList());
+        return Response.ok(songsByAuthorGenreDTO).build();
+    }
+
 
 
 

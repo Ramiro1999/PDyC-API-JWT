@@ -4,6 +4,7 @@ package unnoba.edu.tp2.Model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "playlist")
@@ -23,7 +24,7 @@ public class Playlist {
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    private ArrayList<Song> songs = new ArrayList<>();
+    private List<Song> songs = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,7 +50,7 @@ public class Playlist {
         this.user = user;
     }
 
-    public ArrayList<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
