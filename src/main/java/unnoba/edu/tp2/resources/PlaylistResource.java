@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import unnoba.edu.tp2.DTO.AddSongPlaylistDTO;
 import unnoba.edu.tp2.DTO.PlaylistDTO;
 import unnoba.edu.tp2.DTO.PlaylistWithSongsDTO;
 import unnoba.edu.tp2.DTO.SongDTO;
 import unnoba.edu.tp2.Model.Playlist;
 import unnoba.edu.tp2.exceptions.PlaylistNotFoundException;
+import unnoba.edu.tp2.exceptions.SongNotFoundException;
 import unnoba.edu.tp2.service.PlaylistService;
 
 import java.util.List;
@@ -72,6 +74,8 @@ public class PlaylistResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    //actualizar nombre de la playlist (preguntar como mostrar mensaje de excepcion)
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/{id}")
@@ -87,6 +91,59 @@ public class PlaylistResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
+
+    //Agregar cancion a playlist
+    @Consumes(MediaType.APPLICATION_JSON)
+    @POST
+    @Path("/{id}/songs")
+    public Response addSongToPlaylist(@PathParam("id")long id, AddSongPlaylistDTO addSongPlaylistDTO){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+            Long idSong = Long.valueOf(addSongPlaylistDTO.getId());
+            playlistService.addSong(id,idSong,loggedEmail);
+            return Response.ok().build();
+        } catch (ForbiddenException e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }catch (PlaylistNotFoundException | SongNotFoundException e){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+
+    //Borrar cancion de una playlist
+    @DELETE
+    @Path("/{id}/songs/{song_id}")
+    public Response deleteSongFromPlaylist(@PathParam("id")long id,@PathParam("song_id") long song_id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+            playlistService.deleteSong(id,song_id,loggedEmail);
+            return Response.ok().build();
+        } catch (ForbiddenException e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }catch (PlaylistNotFoundException | SongNotFoundException e){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+
+    //Borrar playlist
+    @DELETE
+    @Path("/{id}")
+    public Response deletePlaylist(@PathParam("id")long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedEmail = (String) auth.getPrincipal();
+        try{
+            playlistService.deletePlaylist(id,loggedEmail);
+            return Response.ok().build();
+        } catch (ForbiddenException e){
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }catch (PlaylistNotFoundException e){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
 
 
 

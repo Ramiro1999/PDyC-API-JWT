@@ -16,4 +16,6 @@ public interface PlaylistRepository extends JpaRepository<Playlist,Long> {
 
     @Query("select p.songs FROM Playlist p where (p.id=:id)")
     List<Song> getSongsByPlaylistId (@Param("id") long id);
+
+
 }
