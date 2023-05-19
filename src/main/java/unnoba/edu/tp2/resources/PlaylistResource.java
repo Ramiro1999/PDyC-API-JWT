@@ -56,8 +56,6 @@ public class PlaylistResource {
                 .collect(Collectors.toList());
         playlistWithSongsDTO.setSongs(songsDTO);
         return Response.ok(playlistWithSongsDTO).build();
-
-
     }
 
     //Crear playlist
@@ -75,7 +73,7 @@ public class PlaylistResource {
         }
     }
 
-    //actualizar nombre de la playlist (preguntar como mostrar mensaje de excepcion)
+    //Actualizar nombre de la playlist (preguntar como mostrar mensaje de excepcion)
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/{id}")
@@ -90,6 +88,7 @@ public class PlaylistResource {
         }catch (PlaylistNotFoundException e){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
     }
 
     //Agregar cancion a playlist
