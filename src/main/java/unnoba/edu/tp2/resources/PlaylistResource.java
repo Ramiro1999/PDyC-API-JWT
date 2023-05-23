@@ -84,9 +84,9 @@ public class PlaylistResource {
             playlistService.update(id,playlistDTO,loggedEmail);
             return Response.ok().build();
         } catch (ForbiddenException e){
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }catch (PlaylistNotFoundException e){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
 
     }
@@ -103,9 +103,9 @@ public class PlaylistResource {
             playlistService.addSong(id,idSong,loggedEmail);
             return Response.ok().build();
         } catch (ForbiddenException e){
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }catch (PlaylistNotFoundException | SongNotFoundException e){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
@@ -120,9 +120,9 @@ public class PlaylistResource {
             playlistService.deleteSong(id,song_id,loggedEmail);
             return Response.ok().build();
         } catch (ForbiddenException e){
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }catch (PlaylistNotFoundException | SongNotFoundException e){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
@@ -137,9 +137,9 @@ public class PlaylistResource {
             playlistService.deletePlaylist(id,loggedEmail);
             return Response.ok().build();
         } catch (ForbiddenException e){
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }catch (PlaylistNotFoundException e){
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
         }
     }
 
