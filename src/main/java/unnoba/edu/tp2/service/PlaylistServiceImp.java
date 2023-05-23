@@ -98,7 +98,7 @@ public class PlaylistServiceImp implements PlaylistService {
         Playlist playlistBD = playlistRepository.findById(id_playlist).orElse(null);
         User userLogged = userRepository.findFirstByEmail(userEmail);
         Song song = songRepository.findById(id_song).orElse(null);
-        boolean existSongInPlaylist = existSongInPlaylist(song,id_playlist);
+        boolean existSongInPlaylist = playlistRepository.existSongInPlaylist(id_playlist,song);
         if(playlistBD==null){
             throw new PlaylistNotFoundException("Playlist no encontrada en la BD");
         }
@@ -112,17 +112,6 @@ public class PlaylistServiceImp implements PlaylistService {
             throw new ForbiddenException("no se puede modificar la playlist, no eres el dueño");
         }
 
-    }
-
-
-    public boolean existSongInPlaylist(Song song, Long id){
-        List<Song> songs = playlistRepository.getSongsByPlaylistId(id);
-        for(Song s : songs){
-            if(Objects.equals(s.getId(), song.getId())){
-                return true;
-            }
-        }
-        return false;
     }
 
     public ArrayList<Song> deleteSong(List<Song>songs,Song song){
