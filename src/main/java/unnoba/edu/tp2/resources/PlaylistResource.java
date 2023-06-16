@@ -33,10 +33,17 @@ public class PlaylistResource {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response getPlaylists(){
-        List<PlaylistDTO> playlistDTO = playlistService.getPlaylists().stream()
-                .map(playlist -> modelMapper.map(playlist, PlaylistDTO.class))
-                .collect(Collectors.toList());
-        return Response.ok(playlistDTO).build();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = (String)auth.getPrincipal();
+        try{
+            List<PlaylistDTO> playlistDTO = playlistService.getPlaylists(userEmail).stream()
+                    .map(playlist -> modelMapper.map(playlist, PlaylistDTO.class))
+                    .collect(Collectors.toList());
+            return Response.ok(playlistDTO).build();
+        }catch (ForbiddenException e){
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+
     }
 
 
@@ -73,7 +80,7 @@ public class PlaylistResource {
         }
     }
 
-    //Actualizar nombre de la playlist (preguntar como mostrar mensaje de excepcion)
+    //Actualizar nombre de la playlist
     @Consumes(MediaType.APPLICATION_JSON)
     @PUT
     @Path("/{id}")

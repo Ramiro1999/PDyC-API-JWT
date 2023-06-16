@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PlaylistService {
 
-    public List<Playlist> getPlaylists();
+    public List<Playlist> getPlaylists(String userEmail)  throws ForbiddenException;
 
     public Playlist findById(Long id);
 

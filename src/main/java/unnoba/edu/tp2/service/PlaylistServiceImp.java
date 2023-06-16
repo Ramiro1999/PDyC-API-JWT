@@ -32,8 +32,13 @@ public class PlaylistServiceImp implements PlaylistService {
     @Autowired
     public SongRepository songRepository;
     @Override
-    public List<Playlist> getPlaylists() {
-        return playlistRepository.findAll();
+    public List<Playlist> getPlaylists(String userEmail) throws ForbiddenException{
+        User userLogged = userRepository.findFirstByEmail(userEmail);
+        if(userLogged!=null) {
+            return playlistRepository.findAll();
+        }else{
+            throw new ForbiddenException("el usuario debe autenticase para ver las playlists");
+        }
     }
 
     @Override
